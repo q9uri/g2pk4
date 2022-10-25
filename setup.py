@@ -10,18 +10,18 @@ required_packages = [
 
 
 setuptools.setup(
-    name="g2pkk",
+    name="g2pk2",
     version="0.1.2",
     author="harmlessman",
     author_email="harmlessman17@gmail.com",
-    description="g2pkk: g2p module for Korean(cross platform)",
+    description="g2pk2: g2p module for Korean(cross platform)",
     install_requires=required_packages,
     license='Apache License 2.0',
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/harmlessman/g2pkk",
+    url="https://github.com/harmlessman/g2pk2",
     packages=setuptools.find_packages(),
-    package_data={'g2pkk': ['g2pkk/idioms.txt', 'g2pkk/rules.txt', 'g2pkk/table.csv']},
+    package_data={'g2pk2': ['g2pk2/idioms.txt', 'g2pk2/rules.txt', 'g2pk2/table.csv']},
     include_package_data=True,
     python_requires=">=3.6",
     classifiers=[

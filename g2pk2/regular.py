@@ -3,7 +3,7 @@
 https://github.com/kyubyong/g2pK
 '''
 
-from g2pkk.utils import gloss, get_rule_id2text
+from g2pk2.utils import gloss, get_rule_id2text
 rule_id2text = get_rule_id2text()
 
 

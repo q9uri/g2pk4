@@ -14,11 +14,11 @@ try:
 except LookupError:
     nltk.download('cmudict')
 
-from g2pkk.special import jyeo, ye, consonant_ui, josa_ui, vowel_ui, jamo, rieulgiyeok, rieulbieub, verb_nieun, balb, palatalize, modifying_rieul
-from g2pkk.regular import link1, link2, link3, link4
-from g2pkk.utils import annotate, compose, group, gloss, parse_table, get_rule_id2text
-from g2pkk.english import convert_eng
-from g2pkk.numerals import convert_num
+from g2pk2.special import jyeo, ye, consonant_ui, josa_ui, vowel_ui, jamo, rieulgiyeok, rieulbieub, verb_nieun, balb, palatalize, modifying_rieul
+from g2pk2.regular import link1, link2, link3, link4
+from g2pk2.utils import annotate, compose, group, gloss, parse_table, get_rule_id2text
+from g2pk2.english import convert_eng
+from g2pk2.numerals import convert_num
 
 
 class G2p(object):
