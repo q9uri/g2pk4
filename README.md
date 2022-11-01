@@ -1,7 +1,7 @@
 # g2pk2
 g2pk2 is a updated folk of [Kyubyong's g2pk](https://github.com/Kyubyong/g2pK), which hasn’t been fixed in many years.
 
-It supports Windows, Linux, and MacOS based on [harmlessman's g2pk]https://github.com/harmlessman/g2pkk
+It supports Windows, Linux, and MacOS based on [harmlessman's g2pk] https://github.com/harmlessman/g2pkk
 
 ## Bug fixed
 * 한국어 어문 규범 제15항 (Korean grammar rules chapter 15) https://github.com/Kyubyong/g2pK/issues/6
