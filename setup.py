@@ -11,7 +11,7 @@ required_packages = [
 
 setuptools.setup(
     name="g2pk2",
-    version="0.0.1",
+    version="0.0.2",
     author="tenebo",
     author_email="tenebo@naver.com",
     description="g2pk2: updated folk of g2pk module",
