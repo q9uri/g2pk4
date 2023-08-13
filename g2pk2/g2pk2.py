@@ -22,7 +22,9 @@ from g2pk2.numerals import convert_num
 
 
 class G2p(object):
-    def __init__(self):
+    def __init__(self, use_konlpy=False):
+        self.use_konlpy = use_konlpy
+        
         self.check_mecab()
         self.mecab = self.get_mecab()
         self.table = parse_table()
@@ -37,35 +39,57 @@ class G2p(object):
         return tmp
 
     def check_mecab(self):
-        if platform.system()=='Windows':
-            spam_spec = importlib.util.find_spec("eunjeon")
+        if self.use_konlpy:
+            spam_spec = importlib.util.find_spec("konlpy")
             non_found = spam_spec is None
             if non_found:
-                print(f'you have to install eunjeon. install it...')
-                p = subprocess.Popen('pip install eunjeon')
+                print(f'you have to install konlpy. install it...')
+                p = subprocess.Popen([sys.executable, "-m", "pip", "install", 'konlpy'])
                 p.wait()
+            else:
+                print("konlpy installed")
         else:
-            spam_spec = importlib.util.find_spec("mecab")
-            non_found = spam_spec is None
-            if non_found:
-                print(f'you have to install python-mecab-ko. install it...')
-                p = subprocess.Popen([sys.executable, "-m", "pip", "install", 'python-mecab-ko'])
-                p.wait()
+            if platform.system()=='Windows':
+                spam_spec = importlib.util.find_spec("eunjeon")
+                non_found = spam_spec is None
+                if non_found:
+                    print(f'you have to install eunjeon. install it...')
+                    p = subprocess.Popen('pip install eunjeon')
+                    p.wait()
+            else:
+                spam_spec = importlib.util.find_spec("mecab")
+                non_found = spam_spec is None
+                if non_found:
+                    print(f'you have to install python-mecab-ko. install it...')
+                    p = subprocess.Popen([sys.executable, "-m", "pip", "install", 'python-mecab-ko'])
+                    p.wait()
+                else:
+                    print("mecab installed")
 
 
     def get_mecab(self):
-        if platform.system() == 'Windows':
+        if self.use_konlpy:
             try:
-                m = self.load_module_func('eunjeon')
-                return m.Mecab()
+                from konlpy.tag import Mecab
             except Exception as e:
-                raise print(f'you have to install eunjeon. "pip install eunjeon"')
+                raise print(f'failed to load konlpy')
+            try:
+                return Mecab()
+            except Exception as e:
+                raise print(f"failed to open konlpy.tag.Mecab")
         else:
-            try:
-                m = self.load_module_func('mecab')
-                return m.MeCab()
-            except Exception as e:
-                print(f'you have to install python-mecab-ko. "pip install python-mecab-ko"')
+            if platform.system() == 'Windows':
+                try:
+                    m = self.load_module_func('eunjeon')
+                    return m.Mecab()
+                except Exception as e:
+                    raise print(f'you have to install eunjeon. "pip install eunjeon"')
+            else:
+                try:
+                    m = self.load_module_func('mecab')
+                    return m.MeCab()
+                except Exception as e:
+                    print("Failed to load python-mecab-ko:", e)
 
 
     def idioms(self, string, descriptive=False, verbose=False):
@@ -166,5 +190,7 @@ class G2p(object):
         return inp
 
 if __name__ == "__main__":
-    g2p = G2p()
-    g2p("나의 친구가 mp3 file 3개를 다운받고 있다")
+    g2p = G2p(use_konlpy=True, mecab_ko_dic_path=r"/Volumes/NewVolumes/source/vits/mecab-ko-dic")
+    a = g2p("나의 친구가 mp3 file 3개를 다운받고 있다")
+
+    print(a)
