@@ -22,8 +22,9 @@ from g2pk2.numerals import convert_num
 
 
 class G2p(object):
-    def __init__(self, use_konlpy=False):
+    def __init__(self, use_konlpy=False, mecab_path=None):
         self.use_konlpy = use_konlpy
+        self.mecab_path = mecab_path
         
         self.check_mecab()
         self.mecab = self.get_mecab()
@@ -74,7 +75,10 @@ class G2p(object):
             except Exception as e:
                 raise print(f'failed to load konlpy')
             try:
-                return Mecab()
+                if self.mecab_path:
+                    return Mecab(self.mecab_path)
+                else:
+                    return Mecab()
             except Exception as e:
                 raise print(f"failed to open konlpy.tag.Mecab")
         else:
