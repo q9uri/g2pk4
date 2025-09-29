@@ -1,0 +1,33 @@
+[project]
+name = "g2pk3"
+version = "0.0.1"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "jamo>=0.4.1",
+    "mecab-ko>=1.0.2",
+    "nltk>=3.9.1",
+]
+
+[dependency-groups]
+dev = [
+    "taskipy>=1.14.1",
+    "pytest"
+]
+
+
+
+[tool.hatch.build.targets.sdist]
+only-include = [
+    "src/g2pk3",
+    "LICENSE",
+    "pyproject.toml",
+    "README.md",
+]
+[tool.hatch.build.targets.wheel]
+packages = ["src/g2pk3"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

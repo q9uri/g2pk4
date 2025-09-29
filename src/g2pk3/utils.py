@@ -163,7 +163,17 @@ def parse_table():
 
 ############## Preprocessing ##############
 def annotate(string, mecab):
-    tokens = mecab.pos(string)
+    parsed_str = mecab.parse(string)
+    parsed_list = parsed_str.split("\n")
+    tokens = []
+    for i in parsed_list:
+        splited = i.split("\t")
+        if len(splited) == 2:
+            surface = splited[0]
+            feature = splited[1]
+            pos = feature.split(",")[0]
+            tokens.append( (surface, pos) )
+    
     if string.replace(" ", "") != "".join(token for token, _ in tokens):
         return string
     blanks = [i for i, char in enumerate(string) if char == " "]
