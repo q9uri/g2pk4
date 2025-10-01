@@ -6,7 +6,6 @@ readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "jamo>=0.4.1",
-    "kabosu-core",
     "mecab-ko>=1.0.2",
     "nltk>=3.9.1",
 ]
@@ -16,7 +15,8 @@ dev = [
     "taskipy>=1.14.1",
     "pytest"
 ]
-
+jp = ["kabosu-core"
+]
 
 
 [tool.hatch.build.targets.sdist]
