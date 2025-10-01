@@ -6,7 +6,7 @@ https://github.com/kyubyong/g2pK
 
 import re2 as re
 
-from .utils import adjust, compose, to_choseong, to_jungseong, to_jongseong, reconstruct
+from g2pk4.utils import adjust, compose, to_choseong, to_jungseong, to_jongseong, reconstruct
 
 
 def convert_eng(string, cmu):

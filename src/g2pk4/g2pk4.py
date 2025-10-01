@@ -2,6 +2,7 @@
 
 
 import os, re
+from pathlib import Path
 
 import nltk
 from jamo import h2j, j2hcj
@@ -17,30 +18,17 @@ except LookupError:
 from .special import jyeo, ye, consonant_ui, josa_ui, vowel_ui, jamo, rieulgiyeok, rieulbieub, verb_nieun, balb, palatalize, modifying_rieul
 from .regular import link1, link2, link3, link4
 from .utils import annotate, compose, group, gloss, parse_table, get_rule_id2text
-from .english import convert_eng
-from .numerals import convert_num
+from .normalaizer.english import convert_eng
+from .normalaizer.numerals import convert_num
 
 #==============================================================
 #added from kdrkdrkdr/g2pk3
-from .japanese import convert_jpn
+from .normalaizer.japanese import convert_jpn
 from .korean import join_jamos, split_syllables
 #=============================================================
 
-HANGUL_CONVERT_LIST = [
-    ('ㅘ', 'ㅗㅏ'),
-    ('ㅙ', 'ㅗㅐ'),
-    ('ㅚ', 'ㅗㅣ'),
-    ('ㅝ', 'ㅜㅓ'),
-    ('ㅞ', 'ㅜㅔ'),
-    ('ㅟ', 'ㅜㅣ'),
-    ('ㅢ', 'ㅡㅣ'),
-    ('ㅑ', 'ㅣㅏ'),
-    ('ㅒ', 'ㅣㅐ'),
-    ('ㅕ', 'ㅣㅓ'),
-    ('ㅖ', 'ㅣㅔ'),
-    ('ㅛ', 'ㅣㅗ'),
-    ('ㅠ', 'ㅣㅜ')
-]
+
+
 
 class G2p(object):
     def __init__(self,):
@@ -51,7 +39,7 @@ class G2p(object):
         self.cmu = cmudict.dict() # for English
 
         self.rule2text = get_rule_id2text() # for comments of main rules
-        self.idioms_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "idioms.txt")
+        self.idioms_path = Path(os.path.dirname(os.path.abspath(__file__)), "dict/idioms.txt")
 
     def load_module_func(self, module_name):
         tmp = __import__(module_name, fromlist=[module_name])
@@ -197,9 +185,6 @@ class G2p(object):
 
         if to_hcj:
 
-            for before, after, in HANGUL_CONVERT_LIST:
-                inp = inp.replace(before, after) 
-
             out = []
 
             for word in inp.split():
@@ -211,7 +196,7 @@ class G2p(object):
                     word_list.append(cur_jamo)
 
                 out.append(word_list)
-                
+
             return out
 
                 
