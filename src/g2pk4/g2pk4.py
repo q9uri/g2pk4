@@ -4,7 +4,7 @@
 import os, re
 
 import nltk
-from jamo import h2j
+from jamo import h2j, j2hcj
 from nltk.corpus import cmudict
 import mecab_ko as MeCab
 
@@ -26,14 +26,9 @@ from .japanese import convert_jpn
 from .korean import join_jamos, split_syllables
 #=============================================================
 
+
 class G2p(object):
-    def __init__(self,
-                 convert_japanese: bool = True,
-                 convert_english: bool = True,
-                 ):
-        
-        self.convert_japanese = convert_japanese
-        self.convert_english = convert_english
+    def __init__(self,):
         
         self.mecab = MeCab.Tagger()
         self.table = parse_table()
@@ -72,7 +67,16 @@ class G2p(object):
 
         return out
 
-    def __call__(self, string, descriptive=False, verbose=False, group_vowels=False, to_syl=True):
+    def __call__(self,
+                string, 
+                descriptive: bool  = False,
+                verbose: bool = False,
+                group_vowels: bool  = False,
+                to_syl: bool = True,
+                to_hcj: bool = False,
+                convert_japanese: bool = True,
+                convert_english: bool = True,
+                ):
         '''Main function
         string: input string
         descriptive: boolean.
@@ -103,9 +107,9 @@ class G2p(object):
         string = self.idioms(string, descriptive, verbose)
 
         # 2 English and Japanese to Hangul
-        if self.convert_english:
+        if convert_english:
             string = convert_eng(string, self.cmu)
-        if self.convert_japanese:
+        if convert_japanese:
             string = convert_jpn(string)
 
         # 3. annotate
@@ -169,13 +173,16 @@ class G2p(object):
         inp = join_jamos(inp_)
         #==============================================================
 
-
         # 9. postprocessing
         if group_vowels:
             inp = group(inp)
 
         if to_syl:
             inp = compose(inp)
+
+        if to_hcj:
+            inp = j2hcj(h2j(inp))
+
         return inp
 
 if __name__ == "__main__":
