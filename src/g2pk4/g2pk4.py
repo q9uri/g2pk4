@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
-import os, re, platform, sys, importlib
-import subprocess
+import os, re
 
 import nltk
 from jamo import h2j
@@ -21,9 +20,20 @@ from .utils import annotate, compose, group, gloss, parse_table, get_rule_id2tex
 from .english import convert_eng
 from .numerals import convert_num
 
+#==============================================================
+#added from kdrkdrkdr/g2pk3
+from .japanese import convert_jpn
+from .korean import join_jamos, split_syllables
+#=============================================================
 
 class G2p(object):
-    def __init__(self,):
+    def __init__(self,
+                 convert_japanese: bool = True,
+                 convert_english: bool = True,
+                 ):
+        
+        self.convert_japanese = convert_japanese
+        self.convert_english = convert_english
         
         self.mecab = MeCab.Tagger()
         self.table = parse_table()
@@ -92,8 +102,11 @@ class G2p(object):
         # 1. idioms
         string = self.idioms(string, descriptive, verbose)
 
-        # 2 English to Hangul
-        string = convert_eng(string, self.cmu)
+        # 2 English and Japanese to Hangul
+        if self.convert_english:
+            string = convert_eng(string, self.cmu)
+        if self.convert_japanese:
+            string = convert_jpn(string)
 
         # 3. annotate
         string = annotate(string, self.mecab)
@@ -126,6 +139,36 @@ class G2p(object):
         # 8 link
         for func in (link1, link2, link3, link4):
             inp = func(inp, descriptive, verbose)
+
+        #==============================================================
+        # added from kdrkdrkdr/g2pk3
+        # 8.5 Error Fix, 제 20항 적용 오류 해결
+        inp_ = ""
+        inp = split_syllables(inp.strip())
+        i = 0
+        while i < len(inp) - 4:
+            if (inp[i:i+3] == 'ㅇㅡㄹ' or inp[i:i+3] == 'ㄹㅡㄹ') and inp[i+3] == ' ' and inp[i+4] == 'ㄹ':
+                inp_ += inp[i:i+3] + ' ' + 'ㄴ'
+                i += 5
+            else:
+                inp_ += inp[i]
+                i += 1
+        inp_ += inp[i:]
+        inp = join_jamos(inp_)        # 8.5 Error Fix, 제 20항 적용 오류 해결
+        inp_ = ""
+        inp = split_syllables(inp.strip())
+        i = 0
+        while i < len(inp) - 4:
+            if (inp[i:i+3] == 'ㅇㅡㄹ' or inp[i:i+3] == 'ㄹㅡㄹ') and inp[i+3] == ' ' and inp[i+4] == 'ㄹ':
+                inp_ += inp[i:i+3] + ' ' + 'ㄴ'
+                i += 5
+            else:
+                inp_ += inp[i]
+                i += 1
+        inp_ += inp[i:]
+        inp = join_jamos(inp_)
+        #==============================================================
+
 
         # 9. postprocessing
         if group_vowels:

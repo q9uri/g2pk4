@@ -1,11 +1,12 @@
 [project]
-name = "g2pk3"
+name = "g2pk4"
 version = "0.0.1"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "jamo>=0.4.1",
+    "kabosu-core",
     "mecab-ko>=1.0.2",
     "nltk>=3.9.1",
 ]
@@ -20,13 +21,16 @@ dev = [
 
 [tool.hatch.build.targets.sdist]
 only-include = [
-    "src/g2pk3",
+    "src/g2pk4",
     "LICENSE",
     "pyproject.toml",
     "README.md",
 ]
 [tool.hatch.build.targets.wheel]
-packages = ["src/g2pk3"]
+packages = ["src/g2pk4"]
+
+[tool.uv.sources]
+kabosu-core = { git = "https://github.com/q9uri/kabosu-core", rev = "f66e09f5ac7c8f7fa47f2861396410746370f9bc" }
 
 [build-system]
 requires = ["hatchling"]
