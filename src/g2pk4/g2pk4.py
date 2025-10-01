@@ -89,10 +89,9 @@ class G2p(object):
                 group_vowels: bool  = False,
                 to_syl: bool = True,
                 to_hcj: bool = False,
-                normalize_hcj: bool = True,
                 convert_japanese: bool = True,
                 convert_english: bool = True,
-                ):
+                ) -> str | list[list[str]]:
         '''Main function
         string: input string
         descriptive: boolean.
@@ -197,11 +196,24 @@ class G2p(object):
             inp = compose(inp)
 
         if to_hcj:
-            inp = j2hcj(h2j(inp))
 
-            if normalize_hcj:
-                for before, after, in HANGUL_CONVERT_LIST:
-                    inp = inp.replace(before, after) 
+            for before, after, in HANGUL_CONVERT_LIST:
+                inp = inp.replace(before, after) 
+
+            out = []
+
+            for word in inp.split():
+                word_list = []
+
+                for i in range(len(word)):
+                    chr = word[i]
+                    cur_jamo = j2hcj(h2j(chr))
+                    word_list.append(cur_jamo)
+
+                out.append(word_list)
+                
+            return out
+
                 
 
         return inp
