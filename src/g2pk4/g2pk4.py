@@ -26,6 +26,21 @@ from .japanese import convert_jpn
 from .korean import join_jamos, split_syllables
 #=============================================================
 
+HANGUL_CONVERT_LIST = [
+    ('ㅘ', 'ㅗㅏ'),
+    ('ㅙ', 'ㅗㅐ'),
+    ('ㅚ', 'ㅗㅣ'),
+    ('ㅝ', 'ㅜㅓ'),
+    ('ㅞ', 'ㅜㅔ'),
+    ('ㅟ', 'ㅜㅣ'),
+    ('ㅢ', 'ㅡㅣ'),
+    ('ㅑ', 'ㅣㅏ'),
+    ('ㅒ', 'ㅣㅐ'),
+    ('ㅕ', 'ㅣㅓ'),
+    ('ㅖ', 'ㅣㅔ'),
+    ('ㅛ', 'ㅣㅗ'),
+    ('ㅠ', 'ㅣㅜ')
+]
 
 class G2p(object):
     def __init__(self,):
@@ -74,6 +89,7 @@ class G2p(object):
                 group_vowels: bool  = False,
                 to_syl: bool = True,
                 to_hcj: bool = False,
+                normalize_hcj: bool = True,
                 convert_japanese: bool = True,
                 convert_english: bool = True,
                 ):
@@ -182,6 +198,11 @@ class G2p(object):
 
         if to_hcj:
             inp = j2hcj(h2j(inp))
+
+            if normalize_hcj:
+                for before, after, in HANGUL_CONVERT_LIST:
+                    inp = inp.replace(before, after) 
+                
 
         return inp
 

@@ -5,6 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
+    "google-re2>=1.1.20250805",
     "jamo>=0.4.1",
     "mecab-ko>=1.0.2",
     "nltk>=3.9.1",

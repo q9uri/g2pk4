@@ -1,0 +1,1 @@
+kabosu_core @ git+https://github.com/q9uri/kabosu-core@f66e09f5ac7c8f7fa47f2861396410746370f9bc
