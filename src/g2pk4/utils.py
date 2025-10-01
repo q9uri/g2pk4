@@ -1,4 +1,4 @@
-import re
+import re2 as re
 from jamo import h2j, j2h
 import os
 
